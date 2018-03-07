@@ -19,6 +19,9 @@
   },
   "homepage": "https://github.com/markchen555/Gighub-Api#readme",
   "dependencies": {
+    "bcrypt": "^1.0.3",
+    "body-parser": "^1.18.2",
+    "jsonwebtoken": "^8.2.0",
     "pg": "^7.4.1",
     "sequelize": "^4.35.2"
   }
