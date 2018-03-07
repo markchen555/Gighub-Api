@@ -4,6 +4,7 @@
   "description": "### Gighub-Api - Job search made easy.",
   "main": "index.js",
   "scripts": {
+    "start": "node bin/entry.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -16,5 +17,9 @@
   "bugs": {
     "url": "https://github.com/markchen555/Gighub-Api/issues"
   },
-  "homepage": "https://github.com/markchen555/Gighub-Api#readme"
+  "homepage": "https://github.com/markchen555/Gighub-Api#readme",
+  "dependencies": {
+    "pg": "^7.4.1",
+    "sequelize": "^4.35.2"
+  }
 }
