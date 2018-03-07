@@ -1,5 +1,5 @@
 {
-  "name": "Gighub-Api",
+  "name": "gighub-api",
   "version": "1.0.0",
   "description": "### Gighub-Api - Job search made easy.",
   "main": "index.js",
@@ -19,8 +19,12 @@
   },
   "homepage": "https://github.com/markchen555/Gighub-Api#readme",
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-register": "^6.26.0",
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
     "jsonwebtoken": "^8.2.0",
     "pg": "^7.4.1",
     "sequelize": "^4.35.2"
