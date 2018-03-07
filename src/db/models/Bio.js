@@ -1,8 +1,8 @@
 import db from '../db';
 import Sequelize from 'sequelize';
+import User from './User';
 
 const Bio = db.define('Bio', {
-  userId: Sequelize.INTEGER,
   resumeLink: Sequelize.STRING,
   phoneNumber: Sequelize.STRING,
   location: Sequelize.STRING,
@@ -13,7 +13,10 @@ const Bio = db.define('Bio', {
   twitter: Sequelize.STRING,
   github: Sequelize.STRING,
   personal: Sequelize.STRING,
-  desiredSalary: Sequelize.STRING
+  desiredSalary: Sequelize.STRING,
+  employment: Sequelize.JSON
 })
+
+Bio.belongsTo(User);
 
 export default Bio;
