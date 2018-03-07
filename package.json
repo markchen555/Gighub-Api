@@ -1,0 +1,20 @@
+{
+  "name": "Gighub-Api",
+  "version": "1.0.0",
+  "description": "### Gighub-Api - Job search made easy.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/markchen555/Gighub-Api.git"
+  },
+  "keywords": [],
+  "author": "Mark Chen, Daniel Chong, Timothy Yoon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/markchen555/Gighub-Api/issues"
+  },
+  "homepage": "https://github.com/markchen555/Gighub-Api#readme"
+}
