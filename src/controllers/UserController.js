@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS);
-const APP_SECRET = process.env.APP_SECRET;
+const APP_SECRET_USER = process.env.APP_SECRET_USER;
 
 const UserController = {
   signup: (req, res) => {
