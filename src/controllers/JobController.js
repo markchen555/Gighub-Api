@@ -44,6 +44,10 @@ const JobController = {
           }
         }
       })
+      .catch((err)=>{
+        console.log("ERROR: Failed to query Job Table. \n", err);
+        res.sendStatus(500);
+      })
   },
   all: (req, res) => {
     Job.findAll()
@@ -52,11 +56,30 @@ const JobController = {
       })
       .catch((err) => {
         console.log("ERROR: Failed to query Job table. \n", err);
+        res.endStatus(500);
       })
+  },
+
+  allJobsByCompany: (req, res) => {
+    const companyId = req.params.jobId || req.model.id;
+    if(!companyId){
+      res.status(400).send({error: "Company must be specified"})
+    } else {
+      Job.findAll({where: {companyId: companyId}})
+        .then((data)=>{
+          res.status(200).send(data);
+        })
+        .catch((err) => {
+          console.log("ERROR: Failed to query Job table. \n", err);
+          res.endStatus(500);
+        })
+    }
   },
 
   delete: (req, res) => {
     const companyId = req.model.id;
+    console.log("OMG THIS IS THE REQ", req.body);
+    console.log("JOB ID IS!!!!!!!!!!!!!!!!!!!!!:", req.body.jobId)
     Job.destroy({where: {id: req.body.jobId}})
       .then(()=>{
         res.sendStatus(204);

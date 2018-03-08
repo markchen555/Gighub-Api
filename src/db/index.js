@@ -28,8 +28,8 @@ db.authenticate()
   .then(()=>{
     console.log('Gighub successfully connected to AWS RDS');
   })
-  .catch(()=>{
-    console.log('Error connecting to RDS')
+  .catch((err)=>{
+    console.log('Error connecting to RDS \n', err)
   })
 
 export default db;

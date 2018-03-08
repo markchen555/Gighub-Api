@@ -22,6 +22,7 @@ const jwtVerify = (type)=>{
     } else {
       jwt.verify(token, secret, (err, success)=>{
         if(err){
+          console.log("ERROR: Failed to complete verification of token.\n", err);
           res.sendStatus(500);
         } else {
           if(!success) {
