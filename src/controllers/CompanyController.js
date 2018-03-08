@@ -151,16 +151,6 @@ const CompanyController = {
         console.log("ERROR: Failed to delete Company SUKey. \n", err);
         res.sendStatus(500);
       })
-  },
-
-  deleteThis: (req, res) => {
-    Company.findAll()
-      .then((data) => {
-        res.send(data);
-      })
-      .catch((err)=> {
-        console.log('lol howd you fuck this up');
-      })
   }
 }
 

@@ -1,5 +1,6 @@
 import Application from '../db/models/Application';
 import Company from '../db/models/Company';
+import Job from '../db/models/Job';
 
 const ApplicationController = {
   create: (req, res) => {
@@ -11,6 +12,28 @@ const ApplicationController = {
       offerLink,
       jobId
     })
+  },
+
+  findAllByUser: (req, res) => {
+    let model = req.model;
+    Application.findAll({where: {userId: model.id}})
+      .then((data)=>{
+        res.status(200).send(data);
+      })
+      .catch((err)=> {
+        res.sendStatus(500);
+      })
+  },
+
+  findAllByJob: (req, res) => {
+    let jobId = req.body.jobId
+    Application.findAll({where: {jobId}})
+      .then((data)=>{
+        res.status(200).send(data);
+      })
+      .catch((err)=> {
+        res.sendStatus(500);
+      })
   },
 
   update: (req, res) => {
