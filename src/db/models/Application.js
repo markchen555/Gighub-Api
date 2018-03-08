@@ -11,7 +11,9 @@ const Application = db.define('Application', {
   round: Sequelize.SMALLINT
 })
 
+User.hasMany(Application);
 Application.belongsTo(User);
+Job.hasMany(Application);
 Application.belongsTo(Job);
 
 export default Application;

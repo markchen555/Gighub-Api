@@ -37,6 +37,20 @@ const UserController = {
                     .catch((err)=> {
                       console.log("ERROR: Failed to create BIO for newly created user in user signup \n", err)
                     })
+                    const { id, firstName, lastName, email } = user;
+                    jwt.sign({
+                      id,
+                      firstName,
+                      lastName,
+                      email
+                    }, APP_SECRET_USER, { expiresIn: 30 * 24 * 60 * 60 * 1000}, (err, token)=> {
+                      if(err){
+                        console.log("ERROR: Failed to sign jwt in user login \n", err);
+                        res.sendStatus(500);
+                      } else {
+                        res.status(200).send(token);
+                      }
+                    })
                     res.sendStatus(201);
                   })
                   .catch((err)=>{
@@ -73,7 +87,7 @@ const UserController = {
                   firstName,
                   lastName,
                   email
-                }, APP_SECRET, { expiresIn: 30 * 24 * 60 * 60 * 1000}, (err, token)=> {
+                }, APP_SECRET_USER, { expiresIn: 30 * 24 * 60 * 60 * 1000}, (err, token)=> {
                   if(err){
                     console.log("ERROR: Failed to sign jwt in user login \n", err);
                     res.sendStatus(500);

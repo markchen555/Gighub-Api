@@ -10,7 +10,6 @@ const User = db.define('user', {
     type: Sequelize.STRING,
     allowNull: false
   },
-  type: Sequelize.INTEGER,
   firstName: {
     type: Sequelize.STRING,
     allowNull: false
