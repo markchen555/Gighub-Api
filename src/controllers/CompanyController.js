@@ -25,10 +25,11 @@ const CompanyController = {
                 Company.create({
                   name,
                   password,
-                  keys: new Set()
+                  keys: {}
                 })
                   .then((company)=>{
                     jwt.sign({
+                      id: company.id,
                       name: company.name
                     }, APP_SECRET_COMPANY, { expiresIn: 30 * 24 * 60 * 60 * 1000}, (err, token)=> {
                       if(err){
@@ -38,7 +39,6 @@ const CompanyController = {
                         res.status(200).send(token);
                       }
                     })
-                    res.sendStatus(201);
                   })
                   .catch((err)=>{
                     console.log("ERROR: Failed to create a company in company signup \n", err);
@@ -70,6 +70,7 @@ const CompanyController = {
             } else {
               if(success){
                 jwt.sign({
+                  id: company.id,
                   name: company.name
                 }, APP_SECRET_COMPANY, { expiresIn: 30 * 24 * 60 * 60 * 1000}, (err, token)=> {
                   if(err){
@@ -93,18 +94,34 @@ const CompanyController = {
   },
 
   generateSUKey: (req, res) => {
-    let { company } = req;
+    let company = req.model;
     let key = shortid.generate();
-    let SUKey = company + '$' + key;
-    let keys = company.keys;
-    keys[key] = req.name;
-    Company.update({keys}, {where: {id: company.id}})
-      .then(()=>{
-        res.status(201).send(SUKey);
+    let SUKey = company.id + '$' + key;
+    let bank = company.keys;
+    bcrypt.hash(key, SALT_ROUNDS, (err, hashed) =>{
+      bank[req.body.name.toLowerCase()] = hashed;
+      Company.update({keys: bank}, {where: {id: company.id}})
+        .then((updated)=>{
+          if(updated){
+            res.status(201).send(SUKey);
+          } else {
+            res.status(500).send({error: "Failed to create key"})
+          }
+        })
+        .catch((err)=>{
+          console.log("ERROR: Failed to update Keys column in Company Table in generateSUKey \n", err);
+          res.sendStatus(500);
+        })
+    })
+  },
+
+  deleteThis: (req, res) => {
+    Company.findAll()
+      .then((data) => {
+        res.send(data);
       })
-      .catch((err)=>{
-        console.log("ERROR: Failed to update Keys column in Company Table in generateSUKey \n", err);
-        res.sendStatus(500);
+      .catch((err)=> {
+        console.log('lol howd you fuck this up');
       })
   }
 }

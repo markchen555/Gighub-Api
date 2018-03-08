@@ -1,83 +1,91 @@
 import Recruiter from '../db/models/Recruiter';
+import Company from '../db/models/Company';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-const SALT_ROUNDS = process.env.SALT_ROUNDS;
+const APP_SECRET_RECRUITER = process.env.APP_SECRET_RECRUITER;
+const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS);
+
 const RecruiterController = {
   signup: (req, res) => {
-    const { username, password, firstName, lastName, email, SUKey } = req.body;
-    if(!name || !password || !firstName || !lastName || !email || !key){
-      res.status(400).send({error: "Fields cannot be empty"})
-    } else {
-      Recruiter.findOne({where: {username}})
-        .then((recruiter)=>{
-          if(recruiter){
-            res.status(409).send({error: "Username already exists"});
-          } else {
-            let [companyId, key] = SUKey.split('$');
-            Company.findOne({id:{name: companyId}})
-              .then((company)=>{
-                let keys = company.keys
-                bcrypt.hash(key, SALT_ROUNDS, (err, hash)=>{
+    const { firstName, lastName, email, password, username, SUKey } = req.body;
+    const [companyId, key] = SUKey.split('$');
+    Recruiter.findOne({where:{username}})
+      .then((recruiter)=>{
+        if(recruiter){
+          res.status(409).send({error: "Username already exists."})
+        } else {
+          Company.findOne({where: {id: companyId}})
+            .then((company)=>{
+              if(!company){
+                res.status(404).send({error: "Failed to find appropriate company."})
+              } else {
+                let bank = company.keys;
+                let fullName = [firstName, lastName].join(' ').toLowerCase();
+                
+                let hash = bank[fullName];
+                bcrypt.compare(key, hash, (err, success)=>{
+                  console.log(fullName, hash, success);
                   if(err){
-                    console.log("ERROR: Failed to hash key in recruiter signup \n", err);
+                    console.log("ERROR: Failed to compare key with hash in Recruiter signup");
                     res.sendStatus(500);
                   } else {
-                    if(keys.has(hash)){
+                    if(success){
                       bcrypt.hash(password, SALT_ROUNDS, (err, password)=>{
                         if(err){
-                          console.log("ERROR: Failed to hash password in recruiter signup \n", err)
+                          console.log("ERROR: Failed to hash password in Recruiter signup");
                           res.sendStatus(500);
                         } else {
                           Recruiter.create({
-                            name,
-                            password,
+                            username,
                             firstName,
                             lastName,
                             email,
-                            companyId: company.id,
+                            password,
                           })
                             .then((recruiter)=>{
-                              const {name, firstName, lastName} = recruiter;
-                              const companyName = company.name;
-                              delete keys[hash];
-                              Company.update({keys}, {where: {id: company.id}})
-                              jwt.sign({
-                                name,
-                                firstName,
-                                lastName,
-                                companyName
-                              }, APP_SECRET_RECRUITER, { expiresIn: 30 * 24 * 60 * 60 * 1000}, (err, token)=> {
-                                if(err){
-                                  console.log("ERROR: Failed to sign jwt in recruiter login \n", err);
-                                  res.sendStatus(500);
-                                } else {
-                                  res.status(200).send(token);
-                                }
-                              })
-                            })
-                            .catch((err)=>{
-                              console.log("ERROR: Failed to create a recruiter in recruiter signup \n", err);
-                              res.sendStatus(500);
+                              delete bank[fullName];
+                              Company.update({keys: bank}, {where: {id: companyId}})
+                                .then((updated)=>{
+                                  if(updated){
+                                    jwt.sign({
+                                      id: recruiter.id,
+                                      firstName,
+                                      lastName,
+                                      email
+                                    }, APP_SECRET_RECRUITER, { expiresIn: 30 * 24 * 60 * 60 * 1000}, (err, token)=> {
+                                      if(err){
+                                        console.log("ERROR: Failed to sign jwt in recruiter login \n", err);
+                                        res.sendStatus(500);
+                                      } else {
+                                        res.status(200).send(token);
+                                      }
+                                    })
+                                  }
+                                })
+                                .catch((err)=>{
+                                  console.log("ERROR: Failed to delete Company Key on Recruiter Signup \n", err);
+                                })
                             })
                         }
                       })
                     } else {
-                      res.status(403).send({error: "Invalid key"})
+                      res.status(404).send({error: "Name/Key combination does not exist"})
                     }
-                  }   
+                  }
                 })
-              })
-              .catch((err)=>{
-                res.status(404).send({error: "Failed to find appropriate company."});
-              })
-          }
-        })
-        .catch((err)=>{
-          console.log("ERROR: Failed to query Recruiter Table in recruiter signup \n", err);
-          res.sendStatus(500);
-        })
-    }
+              }
+            })
+            .catch((err)=>{
+              console.log("ERROR: Failed to query Company Table");
+              res.sendStatus(500);
+            })
+        }
+      })
+      .catch((err)=>{
+        console.log("ERROR: Failed to query Recruiter Table");
+        res.sendStatus(500);
+      })
   },
 
   login: (req, res)=> {
@@ -94,8 +102,13 @@ const RecruiterController = {
               res.sendStatus(500);
             } else {
               if(success){
+                const { id, firstName, lastName, email, photoLink } = recruiter
                 jwt.sign({
-                  name: recruiter.name
+                  id,
+                  firstName,
+                  lastName,
+                  email,
+                  photoLink
                 }, APP_SECRET_RECRUITER, { expiresIn: 30 * 24 * 60 * 60 * 1000}, (err, token)=> {
                   if(err){
                     console.log("ERROR: Failed to sign jwt in recruiter login \n", err);
