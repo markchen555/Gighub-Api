@@ -2,6 +2,7 @@ import express from 'express';
 import UserController from '../../controllers/UserController';
 import jwtVerify from '../middleware/jwtVerify';
 import ApplicationController from '../../controllers/ApplicationController';
+import JobController from '../../controllers/JobController';
 
 const userRouter = express.Router();
 
@@ -19,5 +20,8 @@ userRouter.route('/edit')
 
 userRouter.route('/myapps')
   .get(jwtVerify(0), ApplicationController.findAllByUser);
+
+userRouter.route('/browse')
+  .get(jwtVerify(0), JobController.all);
   
 export default userRouter;
