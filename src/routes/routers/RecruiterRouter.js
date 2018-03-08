@@ -3,15 +3,15 @@ import RecruiterController from '../../controllers/RecruiterController';
 import jwtVerify from '../middleware/jwtVerify';
 import ApplicationController from '../../controllers/ApplicationController';
 
-const RecruiterRouter = express.Router();
+const recruiterRouter = express.Router();
 
-RecruiterRouter.route('/login/:name/:password')
+recruiterRouter.route('/login/:name/:password')
   .get(RecruiterController.login);
   
-RecruiterRouter.route('/signup')
+recruiterRouter.route('/signup')
   .post(RecruiterController.signup);
 
-RecruiterRouter.route('/apps')
-  .get(jwtVerify(1), ApplicationController.findAllByCompany);
-  
-export default RecruiterRouter;
+recruiterRouter.route('/apps')
+  .get(jwtVerify(1), ApplicationController.findAllByJob);
+
+export default recruiterRouter;
