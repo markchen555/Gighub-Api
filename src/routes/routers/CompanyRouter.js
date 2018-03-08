@@ -19,11 +19,12 @@ companyRouter.route('/key')
   .delete(jwtVerify(2), CompanyController.deleteSUKey);
 
 companyRouter.route('/jobs')
+  .get(jwtVerify(2), JobController.allJobsByCompany)
   .put(jwtVerify(2), JobController.update)
   .post(jwtVerify(2), JobController.create)
   .delete(jwtVerify(2), JobController.delete);
-  
+
 companyRouter.route('/apps')
-  .get(jwtVerify(2), ApplicationController.findAllByJob);
+  .get(jwtVerify(2), ApplicationController.findAllByCompany);
   
 export default companyRouter;

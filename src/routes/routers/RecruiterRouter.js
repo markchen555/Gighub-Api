@@ -12,6 +12,9 @@ recruiterRouter.route('/signup')
   .post(RecruiterController.signup);
 
 recruiterRouter.route('/apps')
-  .get(jwtVerify(1), ApplicationController.findAllByJob);
+  .get(jwtVerify(1), ApplicationController.findAllByCompany);
+
+recruiterRouter.route('/update')
+  .put(jwtVerify(1), ApplicationController.update);
 
 export default recruiterRouter;
