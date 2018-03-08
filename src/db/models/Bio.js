@@ -8,13 +8,15 @@ const Bio = db.define('Bio', {
   location: Sequelize.STRING,
   headline: Sequelize.STRING,
   experience: Sequelize.STRING,
-  education: Sequelize.STRING,
   linkedin: Sequelize.STRING,
   twitter: Sequelize.STRING,
   github: Sequelize.STRING,
   personal: Sequelize.STRING,
   desiredSalary: Sequelize.STRING,
-  employment: Sequelize.JSON
+  employment: Sequelize.JSON,
+  achievements: Sequelize.TEXT,
+  licenseCerts: Sequelize.TEXT,
+  education: Sequelize.JSON
 })
 
 User.hasOne(Bio);
