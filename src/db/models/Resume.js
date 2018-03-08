@@ -8,6 +8,7 @@ const Resume = db.define('resume', {
   education: Sequelize.JSON
 })
 
+User.hasOne(Resume);
 Resume.belongsTo(User);
 
 export default Resume;

@@ -12,6 +12,7 @@ const Job = db.define('job', {
   keywords: Sequelize.JSON
 })
 
+Company.hasMany(Job);
 Job.belongsTo(Company);
 
 export default Job;

@@ -29,6 +29,7 @@
     "express": "^4.16.2",
     "jsonwebtoken": "^8.2.0",
     "pg": "^7.4.1",
-    "sequelize": "^4.35.2"
+    "sequelize": "^4.35.2",
+    "shortid": "^2.2.8"
   }
 }

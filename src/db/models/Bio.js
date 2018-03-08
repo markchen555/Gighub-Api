@@ -17,6 +17,7 @@ const Bio = db.define('Bio', {
   employment: Sequelize.JSON
 })
 
+User.hasOne(Bio);
 Bio.belongsTo(User);
 
 export default Bio;
