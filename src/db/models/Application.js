@@ -3,7 +3,7 @@ import Sequelize from 'sequelize';
 import User from './User';
 import Job from './Job';
 import Recruiter from './Recruiter';
-
+import Company from './Company';
 
 const Application = db.define('Application', {
   status: Sequelize.SMALLINT,
@@ -20,5 +20,6 @@ Application.belongsTo(Job);
 
 Recruiter.hasMany(Application);
 Application.belongsTo(Recruiter);
+
 
 export default Application;

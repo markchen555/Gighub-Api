@@ -8,36 +8,40 @@ const companySecret = process.env.APP_SECRET_COMPANY;
 const recruiterSecret = process.env.APP_SECRET_RECRUITER;
 
 const jwtVerify = (type)=>{
-  let types = [User, Recruiter, Company];
-  let secrets = [userSecret, recruiterSecret, companySecret];
+  const types = [User, Recruiter, Company];
+  const secrets = [userSecret, recruiterSecret, companySecret];
 
-  let model = types[type];
-  let secret = secrets[type];
+  const model = types[type];
+  const secret = secrets[type];
 
   const middle = (req, res, next) => {
-    let token = req.headers.authorization;
-    let decoded = jwt.decode(token)
-    if(!token || decoded.id){
+    const token = req.headers.authorization;
+    const decoded = jwt.decode(token, {complete: true})
+    if(!token || !decoded.payload.id){
       res.sendStatus(403);
     } else {
-      jwt.verify(token, secret, (err, decoded)=>{
-        if(err) {
-          res.sendStatus(403);
+      jwt.verify(token, secret, (err, success)=>{
+        if(err){
+          res.sendStatus(500);
         } else {
-          model.findOne({where: {id: decoded.id}})
-            .then((data) => {
-              if(data){
-                req.model = data;
-                next()
-              } else {
-                console.log(model, data);
-                res.sendStatus(404);
-              }
-            })
-            .catch((err)=> {
-              console.log(err);
-              res.sendStatus(500);
-            })
+          if(!success) {
+            res.sendStatus(403);
+          } else {
+            model.findOne({where: {id: decoded.payload.id}})
+              .then((data) => {
+                if(data){
+                  req.model = data;
+                  next()
+                } else {
+                  console.log(model, data);
+                  res.sendStatus(404);
+                }
+              })
+              .catch((err)=> {
+                console.log(err);
+                res.sendStatus(500);
+              })
+          }
         }
       })
     }

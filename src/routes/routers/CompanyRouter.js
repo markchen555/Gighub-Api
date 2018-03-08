@@ -1,7 +1,10 @@
 import express from 'express';
-import CompanyController from '../../controllers/CompanyController';
 import jwtVerify from '../middleware/jwtVerify';
+
+import CompanyController from '../../controllers/CompanyController';
 import JobController from '../../controllers/JobController';
+import ApplicationController from '../../controllers/ApplicationController';
+
 const companyRouter = express.Router();
 
 companyRouter.route('/login/:name/:password')
@@ -15,10 +18,10 @@ companyRouter.route('/key')
   .post(jwtVerify(2), CompanyController.generateSUKey)
   .delete(jwtVerify(2), CompanyController.deleteSUKey);
 
-companyRouter.route('/test')
-  .get(CompanyController.deleteThis);
-
-companyRouter.post('/createJob')
+companyRouter.route('/createJob')
   .post(jwtVerify(2), JobController.create);
+
+companyRouter.route('/apps')
+  .get(jwtVerify(2), ApplicationController.findAllByJob);
   
 export default companyRouter;
