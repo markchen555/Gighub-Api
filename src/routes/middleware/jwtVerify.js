@@ -16,14 +16,15 @@ const jwtVerify = (type)=>{
 
   const middle = (req, res, next) => {
     let token = req.headers.authorization;
-    if(!token){
+    let decoded = jwt.decode(token)
+    if(!token || decoded.id){
       res.sendStatus(403);
     } else {
       jwt.verify(token, secret, (err, decoded)=>{
         if(err) {
           res.sendStatus(403);
         } else {
-          model.findOne({where: {id: req.body.id}})
+          model.findOne({where: {id: decoded.id}})
             .then((data) => {
               if(data){
                 req.model = data;

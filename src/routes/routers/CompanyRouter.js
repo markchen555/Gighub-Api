@@ -10,13 +10,15 @@ companyRouter.route('/login/:name/:password')
 companyRouter.route('/signup')
   .post(CompanyController.signup);
 
-companyRouter.route('/generate')
-  .post(jwtVerify(2), CompanyController.generateSUKey);
+companyRouter.route('/key')
+  .get(jwtVerify(2), CompanyController.listSUKeys)
+  .post(jwtVerify(2), CompanyController.generateSUKey)
+  .delete(jwtVerify(2), CompanyController.deleteSUKey);
 
 companyRouter.route('/test')
   .get(CompanyController.deleteThis);
 
-companyRouter.post('/create')
+companyRouter.post('/createJob')
   .post(jwtVerify(2), JobController.create);
   
 export default companyRouter;
