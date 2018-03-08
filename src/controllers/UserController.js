@@ -51,7 +51,6 @@ const UserController = {
                         res.status(200).send(token);
                       }
                     })
-                    res.sendStatus(201);
                   })
                   .catch((err)=>{
                     console.log("ERROR: Failed to create a user in user signup \n", err);
@@ -81,12 +80,13 @@ const UserController = {
               res.sendStatus(500);
             } else {
               if(success){
-                const { id, firstName, lastName, email } = user;
+                const { id, firstName, lastName, email, photoLink } = user;
                 jwt.sign({
                   id,
                   firstName,
                   lastName,
-                  email
+                  email,
+                  photoLink
                 }, APP_SECRET_USER, { expiresIn: 30 * 24 * 60 * 60 * 1000}, (err, token)=> {
                   if(err){
                     console.log("ERROR: Failed to sign jwt in user login \n", err);
