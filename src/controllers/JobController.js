@@ -45,6 +45,15 @@ const JobController = {
         }
       })
   },
+  all: (req, res) => {
+    Job.findAll()
+      .then((data)=>{
+        res.status(200).send(data);
+      })
+      .catch((err) => {
+        console.log("ERROR: Failed to query Job table. \n", err);
+      })
+  },
 
   delete: (req, res) => {
     const companyId = req.model.id;

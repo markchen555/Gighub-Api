@@ -109,12 +109,12 @@ const UserController = {
   },
   
   getBio: (req, res) => {
-    User.findOne({where: {id: req.params.id}, include: [{model: Bio, where: {userId: parseInt(req.params.id)}}]})
+    User.findOne({where: {id: req.params.id}, include: [{model: Bio, where: {userId: req.params.id}}]})
       .then((data)=>{
         res.status(200).send(data);
       })
       .catch((err)=>{
-        console.log("ERROR: Failed to grab user Bio \n", err);
+        console.log("ERROR: Failed to get user Bio. \n", err)
         res.sendStatus(500);
       })
   },
