@@ -11,5 +11,4 @@ applicationRouter.route('/update')
   .put(jwtVerify(1), ApplicationController.update);
 
 
-
 export default applicationRouter;
