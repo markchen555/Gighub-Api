@@ -106,6 +106,29 @@ const UserController = {
         console.log("ERROR: Failed to query User table in user login \n", err);
         res.sendStatus(500);
       })
+  },
+  
+  getBio: (req, res) => {
+    User.findOne({where: {id: req.params.id}, include: [{model: Bio, where: {userId: req.params.id}}]})
+      .then((data)=>{
+        res.status(200).send(data);
+      })
+      .catch((err)=>{
+        res.sendStatus(500);
+      })
+  },
+
+  updateBio: (req, res) => {
+    let id = req.model.id;
+    let update = req.body;
+    Bio.update(update, {where: {userId: id}})
+      .then(()=>{
+        res.sendStatus(204);
+      })
+      .catch((err)=>{
+        console.log("ERROR: Failed to update Bio for user \n", err);
+        res.sendStatus(500);
+      })
   }
 }
 
