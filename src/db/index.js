@@ -7,7 +7,7 @@ import User from './models/User';
 import Job from './models/Job';
 import Application from './models/Application';
 
-const force = {force: true}
+const force = {force: false}
 
 User.sync(force)
   .then(()=>{
