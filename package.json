@@ -25,14 +25,8 @@
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
-<<<<<<< HEAD
-<<<<<<< HEAD
     "dotenv": "^5.0.1",
     "express": "^4.16.2",
-=======
->>>>>>> [ops] Sets up Company and Recruiter authorization routes
-=======
->>>>>>> 2dbc6ef1f05ae8c2d2b41fd21fd952ef6f3099aa
     "jsonwebtoken": "^8.2.0",
     "pg": "^7.4.1",
     "sequelize": "^4.35.2",
