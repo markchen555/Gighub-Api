@@ -73,7 +73,7 @@ const UserController = {
         if(!user){
           res.status(404).send({error: "Username/Password does not match"})
         } else {
-          let hashed = user.password;
+          const hashed = user.password;
           bcrypt.compare(password, hashed, (err, success)=>{
             if(err){
               console.log("ERROR: Failed to compare hashed password in user login \n", err);
@@ -119,8 +119,8 @@ const UserController = {
   },
 
   updateBio: (req, res) => {
-    let id = req.model.id;
-    let update = req.body;
+    const id = req.model.id;
+    const update = req.body;
     Bio.update(update, {where: {userId: id}})
       .then(()=>{
         res.sendStatus(204);

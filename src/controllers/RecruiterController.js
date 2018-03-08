@@ -21,8 +21,8 @@ const RecruiterController = {
                 res.status(404).send({error: "Failed to find appropriate company."})
               } else {
                 let bank = company.keys;
-                let fullName = [firstName, lastName].join(' ').toLowerCase();
-                
+                let fullName = [firstName, lastName].join('').toLowerCase();
+          
                 let hash = bank[fullName];
                 bcrypt.compare(key, hash, (err, success)=>{
                   console.log(fullName, hash, success);

@@ -1,5 +1,15 @@
 import express from 'express';
+import jwtVerify from '../middleware/jwtVerify';
+import ApplicationController from '../../controllers/ApplicationController';
 
-const ApplicationRouter = express.Router();
+const applicationRouter = express.Router();
 
-export default ApplicationRouter;
+applicationRouter.route('/create')
+  .post(jwtVerify(0), ApplicationController.create);
+
+applicationRouter.route('/update')
+  .put(jwtVerify(1), ApplicationController.update);
+
+
+
+export default applicationRouter;
