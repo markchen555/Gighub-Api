@@ -20,10 +20,10 @@ const RecruiterController = {
               if(!company){
                 res.status(404).send({error: "Failed to find appropriate company."})
               } else {
-                let bank = company.keys;
-                let fullName = [firstName, lastName].join('').toLowerCase();
+                const bank = company.keys;
+                const fullName = [firstName, lastName].join('').toLowerCase();
           
-                let hash = bank[fullName];
+                const hash = bank[fullName];
                 bcrypt.compare(key, hash, (err, success)=>{
                   console.log(fullName, hash, success);
                   if(err){
@@ -95,7 +95,7 @@ const RecruiterController = {
         if(!recruiter){
           res.status(404).send({error: "Recruiter/Password does not match"})
         } else {
-          let hashed = recruiter.password;
+          const hashed = recruiter.password;
           bcrypt.compare(password, hashed, (err, success)=>{
             if(err){
               console.log("ERROR: Failed to compare hashed password in recruiter login \n", err);
