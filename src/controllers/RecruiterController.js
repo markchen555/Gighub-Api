@@ -52,7 +52,8 @@ const RecruiterController = {
                                       id: recruiter.id,
                                       firstName,
                                       lastName,
-                                      email
+                                      email,
+                                      type: 1
                                     }, APP_SECRET_RECRUITER, { expiresIn: 30 * 24 * 60 * 60 * 1000}, (err, token)=> {
                                       if(err){
                                         console.log("ERROR: Failed to sign jwt in recruiter login \n", err);
@@ -108,7 +109,8 @@ const RecruiterController = {
                   firstName,
                   lastName,
                   email,
-                  photoLink
+                  photoLink,
+                  type: 1
                 }, APP_SECRET_RECRUITER, { expiresIn: 30 * 24 * 60 * 60 * 1000}, (err, token)=> {
                   if(err){
                     console.log("ERROR: Failed to sign jwt in recruiter login \n", err);

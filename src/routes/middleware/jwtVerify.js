@@ -3,43 +3,35 @@ import User from '../../db/models/User';
 import Recruiter from '../../db/models/Recruiter';
 import Company from '../../db/models/Company';
 
-const userSecret = process.env.APP_SECRET_USER;
-const companySecret = process.env.APP_SECRET_COMPANY;
-const recruiterSecret = process.env.APP_SECRET_RECRUITER;
+const APP_SECRET = process.env.APP_SECRET;
 
-const jwtVerify = (type)=>{
-  const types = [User, Recruiter, Company];
-  const secrets = [userSecret, recruiterSecret, companySecret];
-
-  const model = types[type];
-  const secret = secrets[type];
-
-  const middle = (req, res, next) => {
+const jwtVerify = (type) => {
+  const middle = (req, res, next)=> {
+    const types = [User, Recruiter, Company];
     const token = req.headers.authorization;
-    const decoded = jwt.decode(token, {complete: true})
-    if(!token || !decoded.payload.id){
+    if(!token){
       res.sendStatus(403);
     } else {
-      jwt.verify(token, secret, (err, success)=>{
+      jwt.verify(token, secret, (err, decoded)=>{
         if(err){
           console.log("ERROR: Failed to complete verification of token.\n", err);
           res.sendStatus(500);
         } else {
-          if(!success) {
+          if(!decoded || decoded.type !== type) {
             res.sendStatus(403);
           } else {
+            const model = types[decoded.type];
             model.findOne({where: {id: decoded.payload.id}})
               .then((data) => {
                 if(data){
                   req.model = data;
                   next()
                 } else {
-                  console.log(model, data);
                   res.sendStatus(404);
                 }
               })
               .catch((err)=> {
-                console.log(err);
+                console.log("ERROR: Failed to error decoding jwt token.\n", err);
                 res.sendStatus(500);
               })
           }
@@ -47,8 +39,6 @@ const jwtVerify = (type)=>{
       })
     }
   }
-
-  return middle
 }
 
 export default jwtVerify;
