@@ -32,7 +32,8 @@ const CompanyController = {
                   .then((company)=>{
                     jwt.sign({
                       id: company.id,
-                      name: company.name
+                      name: company.name,
+                      type: 2
                     }, APP_SECRET_COMPANY, { expiresIn: 30 * 24 * 60 * 60 * 1000}, (err, token)=> {
                       if(err){
                         console.log("ERROR: Failed to sign jwt in company login \n", err);
@@ -73,7 +74,8 @@ const CompanyController = {
               if(success){
                 jwt.sign({
                   id: company.id,
-                  name: company.name
+                  name: company.name,
+                  type: 2
                 }, APP_SECRET_COMPANY, { expiresIn: 30 * 24 * 60 * 60 * 1000}, (err, token)=> {
                   if(err){
                     console.log("ERROR: Failed to sign jwt in company login \n", err);

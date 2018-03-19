@@ -42,7 +42,8 @@ const UserController = {
                       id,
                       firstName,
                       lastName,
-                      email
+                      email,
+                      type: 0
                     }, APP_SECRET_USER, { expiresIn: 30 * 24 * 60 * 60 * 1000}, (err, token)=> {
                       if(err){
                         console.log("ERROR: Failed to sign jwt in user login \n", err);
@@ -86,7 +87,8 @@ const UserController = {
                   firstName,
                   lastName,
                   email,
-                  photoLink
+                  photoLink,
+                  type: 0
                 }, APP_SECRET_USER, { expiresIn: 30 * 24 * 60 * 60 * 1000}, (err, token)=> {
                   if(err){
                     console.log("ERROR: Failed to sign jwt in user login \n", err);
